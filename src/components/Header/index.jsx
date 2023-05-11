@@ -5,7 +5,7 @@ import Logo from './logo.png';
 
 export const Header = () => {
     return (
-        <div className=" flex">
+        <div className="flex justify-between">
             <div className=" flex items-center cursor-pointer">
                 <img className="w-11 h-11" src={Logo} alt="Logo" />
                 <div className=" flex flex-col ml-4">
