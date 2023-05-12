@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const CartButton = ({ totalPrice = 520, totalCount = 3 }) => {
     return (
         <div className="flex bg-main-orange text-base text-white font-bold rounded-full items-center overflow-hidden">
@@ -24,12 +22,6 @@ export const CartButton = ({ totalPrice = 520, totalCount = 3 }) => {
 
                 {totalCount === 0 ? '' : totalCount}
             </div>
-            {/* <button className=" bg-main-orange text-base py-4 pl-6 pr-3 text-white font-bold rounded-tl-full rounded-bl-full border-r">
-                {totalPrice} $
-            </button>
-            <button className=" bg-main-orange text-base py-4 pl-3 pr-6 text-white font-bold rounded-tr-full rounded-br-full">
-                {totalPrice} $
-            </button> */}
         </div>
     );
 };

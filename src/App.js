@@ -1,12 +1,7 @@
-import { Header } from './components/Header';
-import { Wrapper } from './components/Wrapper';
+import { Home } from './pages/Home';
 
 function App() {
-    return (
-        <Wrapper>
-            <Header />
-        </Wrapper>
-    );
+    return <Home />;
 }
 
 export default App;
