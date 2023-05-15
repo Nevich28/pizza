@@ -40,7 +40,7 @@ export const Sort = () => {
                         initial={{ height: 0 }}
                         animate={{ height: 'auto' }}
                         exit={{ height: 0 }}
-                        className="flex flex-col absolute right-0 top-9 rounded-lg shadow-md overflow-hidden z-10">
+                        className="flex flex-col absolute right-0 top-9 rounded-lg shadow-md overflow-hidden z-10 bg-white">
                         {sortArr.map((item, i) => (
                             <span
                                 className=" text-sm font-bold cursor-pointer py-3 pl-3 pr-6 hover:bg-[rgba(254,95,30,0.05)] hover:text-main-orange"
