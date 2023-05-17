@@ -1,33 +1,68 @@
 import { Categories } from '../components/Categories';
-import { CartItem } from '../components/CatrItem';
-import { Header } from '../components/Header';
+import { CardItem } from '../components/CardItem';
 import { Sort } from '../components/Sort';
-import { Wrapper } from '../components/Wrapper';
-import pizzas from '../assets/pizzas.json';
-
-// const pizzaArr = [
-//     { name: 'Cheeseburger Pizza', price: '8,70' },
-//     { name: 'Cheese', price: '4,65' },
-//     { name: 'Asian style shrimp', price: '9,90' },
-//     { name: 'Cheese chicken', price: '6,80' },
-//     { name: 'Margarita', price: '4,10' },
-// ];
+import { useEffect, useState } from 'react';
+import { Skeleton } from '../components/CardItem/Skeleton';
+import { sortStateItems } from '../helpers/helpers';
+import { Search } from '../components/Search';
 
 export const Home = () => {
+    const [items, setItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [catNameCurrent, setCatName] = useState('All');
+    const [searchPizzaCurrent, setSearchPizzaCurrent] = useState('');
+
+    const filterCategory = (catName = 'All') => {
+        setCatName(catName);
+    };
+    useEffect(() => {
+        if (catNameCurrent === 'All') {
+            const filteredAll = items.filter((item) => item.title.indexOf(searchPizzaCurrent) > -1);
+            setFilteredItems(filteredAll);
+        } else {
+            const filtered = items.filter(
+                (item) =>
+                    item.category === catNameCurrent && item.title.indexOf(searchPizzaCurrent) > -1,
+            );
+            setFilteredItems(filtered);
+        }
+    }, [catNameCurrent, searchPizzaCurrent]);
+
+    const sortValue = (value = 'alphabetically', sortDirection = true) => {
+        const tempFilteredItems = JSON.parse(JSON.stringify(filteredItems));
+        setFilteredItems(sortStateItems(tempFilteredItems, value, sortDirection));
+    };
+
+    const searchPizza = (value) => {
+        setSearchPizzaCurrent(value);
+    };
+
+    useEffect(() => {
+        // fetch('https://run.mocky.io/v3/47b5ec01-4ca7-4919-88bb-f6a3be5845bd')
+        fetch('https://alfastroy.kharkov.ua/feedback/default')
+            .then((res) => res.json())
+            .then((json) => {
+                setItems(json);
+                setFilteredItems(json);
+                setIsLoading(false);
+            });
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
-        <Wrapper>
-            <Header />
-            <div className=" h-px md:w-[calc(100%+104px)] bg-[#F7F7F7] md:-ml-[52px] mt-10"></div>
-            <div className="flex justify-between mt-10 flex-wrap">
-                <Categories items={pizzas} />
-                <Sort />
+        <>
+            <div className="flex items-center justify-between mt-10 flex-wrap">
+                <Categories filterCategory={filterCategory} items={items} />
+                <Search searchPizza={searchPizza} />
+                <Sort sortValue={sortValue} />
             </div>
             <h2 className="text-3xl font-bold mt-7 auto-rows-auto">All pizzas</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mt-8">
-                {pizzas.map(({ id, ...item }) => (
-                    <CartItem key={id} {...item} />
-                ))}
+            <div className="grid grid-cols-1 items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mt-8">
+                {isLoading
+                    ? [...new Array(8)].map((_, i) => <Skeleton key={i} className=" mx-auto" />)
+                    : filteredItems.map(({ id, ...item }) => <CardItem key={id} {...item} />)}
             </div>
-        </Wrapper>
+        </>
     );
 };

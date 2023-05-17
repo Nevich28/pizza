@@ -3,13 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const sortArr = ['popularity', 'by price', 'alphabetically'];
 
-export const Sort = () => {
+export const Sort = ({ sortValue }) => {
     const [isSelected, setIsSelected] = useState(sortArr[0]);
     const [isOpened, setIsOpened] = useState(false);
+    const [sortDirection, setSortDirection] = useState(true);
 
     const handleMenuItem = (item) => {
         setIsSelected(item);
         setIsOpened(!isOpened);
+        sortValue(item, sortDirection);
+    };
+    const handleSortDirection = (direction) => {
+        setSortDirection(!direction);
+        sortValue(isSelected, !direction);
     };
     return (
         <div className=" relative">
@@ -20,7 +26,10 @@ export const Sort = () => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-4 h-4 scale-x-75 -rotate-90">
+                    onClick={() => handleSortDirection(sortDirection)}
+                    className={`w-4 h-4 scale-x-75 cursor-pointer transition-all duration-200 ${
+                        sortDirection ? '-rotate-90' : 'rotate-90'
+                    }`}>
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -36,20 +45,20 @@ export const Sort = () => {
             </div>
             <AnimatePresence>
                 {isOpened && (
-                    <motion.div
+                    <motion.ul
                         initial={{ height: 0 }}
                         animate={{ height: 'auto' }}
                         exit={{ height: 0 }}
                         className="flex flex-col absolute right-0 top-9 rounded-lg shadow-md overflow-hidden z-10 bg-white">
                         {sortArr.map((item, i) => (
-                            <span
+                            <li
                                 className=" text-sm font-bold cursor-pointer py-3 pl-3 pr-6 hover:bg-[rgba(254,95,30,0.05)] hover:text-main-orange"
                                 key={i}
                                 onClick={() => handleMenuItem(item)}>
                                 {item}
-                            </span>
+                            </li>
                         ))}
-                    </motion.div>
+                    </motion.ul>
                 )}
             </AnimatePresence>
         </div>
