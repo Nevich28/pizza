@@ -1,4 +1,6 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategory } from '../../redux/slices/filterSlice';
 
 // const categoryesArr = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
 
@@ -15,22 +17,24 @@ const CategoryItem = ({ title, itemSelect, isActive = false }) => {
 };
 
 export const Categories = ({ items, filterCategory }) => {
+    const dispatch = useDispatch();
     const categories = [...new Set(items.map((item) => item.category))];
     categories.unshift('All');
-    const [isSelected, setIsSelected] = useState(categories[0]);
-    const handleCategory = (item) => {
-        if (item !== isSelected) {
-            setIsSelected(item);
-            filterCategory(item);
-        }
-    };
+    const isSelected = useSelector((state) => state.filter.category);
+    // const [isSelected, setIsSelected] = useState(categories[0]);
+    // const handleCategory = (item) => {
+    //     if (item !== isSelected) {
+    //         // setIsSelected(item);
+    //         // filterCategory(item);
+    //         dispatch(setCategory(item));
+    //     }
+    // };
     return (
-        // <ul className=" flex xl:space-x-4 flex-wrap">
         <ul className=" flex flex-wrap">
             {categories.map((item, i) => (
                 <CategoryItem
                     isActive={isSelected === item ? true : false}
-                    itemSelect={() => handleCategory(item)}
+                    itemSelect={() => dispatch(setCategory(item))}
                     key={i}
                     title={item}
                 />

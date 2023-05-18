@@ -1,24 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSortProperty, setSortDirection } from '../../redux/slices/filterSlice';
 
 const sortArr = ['popularity', 'by price', 'alphabetically'];
 
-export const Sort = ({ sortValue }) => {
-    const [isSelected, setIsSelected] = useState(sortArr[0]);
+export const Sort = () => {
+    const dispatch = useDispatch();
+    const isSelected = useSelector((state) => state.filter.sortProperty);
+    const sortDirection = useSelector((state) => state.filter.sortDirection);
     const [isOpened, setIsOpened] = useState(false);
-    const [sortDirection, setSortDirection] = useState(true);
+    const sortRef = useRef();
 
     const handleMenuItem = (item) => {
-        setIsSelected(item);
+        dispatch(setSortProperty(item));
         setIsOpened(!isOpened);
-        sortValue(item, sortDirection);
     };
-    const handleSortDirection = (direction) => {
-        setSortDirection(!direction);
-        sortValue(isSelected, !direction);
-    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.composedPath().includes(sortRef.current)) {
+                setIsOpened(false);
+            }
+        };
+
+        document.body.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.body.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className=" relative">
+        <div ref={sortRef} className=" relative">
             <div className="flex items-center">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +40,7 @@ export const Sort = ({ sortValue }) => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    onClick={() => handleSortDirection(sortDirection)}
+                    onClick={() => dispatch(setSortDirection(!sortDirection))}
                     className={`w-4 h-4 scale-x-75 cursor-pointer transition-all duration-200 ${
                         sortDirection ? '-rotate-90' : 'rotate-90'
                     }`}>

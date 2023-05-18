@@ -1,21 +1,12 @@
-export const sortStateItems = (tempFilteredItems, value, sortDirection) => {
-    const comparePopularity = (a, b) =>
-        sortDirection ? (a.rating < b.rating ? -1 : 1) : a.rating > b.rating ? -1 : 1;
-    const compareByPrice = (a, b) =>
-        sortDirection ? (a.price[0] < b.price[0] ? -1 : 1) : a.price[0] > b.price[0] ? -1 : 1;
-    const compareTitle = (a, b) =>
-        sortDirection ? (a.title < b.title ? -1 : 1) : a.title > b.title ? -1 : 1;
-    switch (value) {
+export const convertSortValue = (sortValue) => {
+    switch (sortValue) {
         case 'popularity':
-            tempFilteredItems.sort(comparePopularity);
-            break;
+            return 'rating';
         case 'by price':
-            tempFilteredItems.sort(compareByPrice);
-            break;
+            return 'price';
         case 'alphabetically':
-            tempFilteredItems.sort(compareTitle);
-            break;
+            return 'title';
         default:
+            return '';
     }
-    return tempFilteredItems;
 };

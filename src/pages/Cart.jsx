@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { BackButton } from '../components/BackButton';
 
 import { CartItem } from '../components/CartItem';

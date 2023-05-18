@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CartButton } from '../CartButton/idex';
+import { useSelector } from 'react-redux';
 
 import Logo from './logo.png';
 
 export const Header = () => {
+    const { totalPrice, totalCount } = useSelector((state) => state.cart);
     return (
         <>
             <div className="flex flex-col items-center sm:flex-row justify-between">
@@ -18,7 +20,7 @@ export const Header = () => {
                     </div>
                 </Link>
                 <Link to="/cart">
-                    <CartButton />
+                    <CartButton totalPrice={totalPrice} totalCount={totalCount} />
                 </Link>
             </div>
             <div className=" h-px md:w-[calc(100%+104px)] bg-[#F7F7F7] md:-ml-[52px] mt-10"></div>
