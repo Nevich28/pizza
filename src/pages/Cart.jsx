@@ -1,9 +1,17 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BackButton } from '../components/BackButton';
 
 import { CartItem } from '../components/CartItem';
+import { EmptyCart } from '../components/EmptyCart';
+import {
+    addItemFromCart,
+    clearItem,
+    removeItemFromCart,
+    removeItemsFromCart,
+} from '../redux/slices/cartSlice';
 
-const CartHead = () => (
+const CartHead = ({ onClear }) => (
     <div className="flex justify-between items-center">
         <div className="flex items-center">
             <svg
@@ -21,7 +29,7 @@ const CartHead = () => (
             </svg>
             <h2 className=" text-3xl font-bold">Cart</h2>
         </div>
-        <div className=" group/clear flex items-center cursor-pointer">
+        <div onClick={onClear} className=" group/clear flex items-center cursor-pointer">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -42,14 +50,14 @@ const CartHead = () => (
     </div>
 );
 
-const CartFoot = () => (
+const CartFoot = ({ totalPrice, totalCount }) => (
     <div className=" mt-10">
         <div className="flex flex-col md:flex-row justify-between text-xl font-normal">
             <span className=" mb-3 md:m-0">
-                Total pizzas: <span className=" font-bold">3 pcs.</span>
+                Total pizzas: <span className=" font-bold">{totalCount} pcs.</span>
             </span>
             <p>
-                Order amount:<span className=" font-bold text-main-orange"> 87 $</span>
+                Order amount:<span className=" font-bold text-main-orange"> {totalPrice} $</span>
             </p>
         </div>
         <div className="flex flex-col md:flex-row justify-between text-xl font-normal mt-10">
@@ -62,15 +70,46 @@ const CartFoot = () => (
 );
 
 export const Cart = () => {
+    const cartItems = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+
+    const onClearCart = () => {
+        dispatch(clearItem());
+    };
+
+    const onAddItem = (id) => {
+        dispatch(addItemFromCart(id));
+    };
+
+    const onRemoveItem = (id, count) => {
+        if (count > 1) dispatch(removeItemFromCart(id));
+    };
+
+    const onRemoveItems = (id, count) => {
+        dispatch(removeItemsFromCart(id));
+    };
+
     return (
         <div className=" lg:w-[80%] xl:w-[60%] mx-auto my-24">
-            <CartHead />
-            <div className="w-full">
-                <CartItem />
-                <CartItem />
-                <CartItem />
-            </div>
-            <CartFoot />
+            {cartItems.items.length > 0 ? (
+                <>
+                    <CartHead onClear={onClearCart} />
+                    <div className="w-full">
+                        {cartItems.items.map((item) => (
+                            <CartItem
+                                onAddItem={onAddItem}
+                                onRemoveItem={onRemoveItem}
+                                onRemoveItems={onRemoveItems}
+                                key={item.id}
+                                {...item}
+                            />
+                        ))}
+                    </div>
+                    <CartFoot {...cartItems} />
+                </>
+            ) : (
+                <EmptyCart />
+            )}
         </div>
     );
 };

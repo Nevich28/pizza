@@ -101,6 +101,7 @@ export const Home = () => {
             </div>
             <Pagination
                 pageCount={pageCount}
+                activePage={currentPage}
                 onChangePage={(number) => dispatch(setCurrentPage(number))}
             />
         </>

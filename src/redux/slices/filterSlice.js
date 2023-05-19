@@ -15,9 +15,11 @@ export const filterSlice = createSlice({
     reducers: {
         setCategory(state, action) {
             state.category = action.payload;
+            state.currentPage = 1;
         },
         setSortProperty(state, action) {
             state.sortProperty = action.payload;
+            state.currentPage = 1;
         },
         setSortDirection(state, action) {
             state.sortDirection = action.payload;

@@ -67,7 +67,7 @@ export const CardItem = ({ id, title, imageUrl, types, sizes, addThiknessPrice, 
                             }`}
                             key={i}
                             onClick={() => setActiveSize(item)}>
-                            {item}
+                            {item} cm.
                         </button>
                     ))}
                 </div>
