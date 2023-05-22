@@ -1,4 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const fetchFilteredItems = createAsyncThunk('filters/fetchFilteredItems', async (url) => {
+    const { data } = await axios.get(url);
+    return data;
+});
+
+export const fetchAllItemsForPage = createAsyncThunk(
+    'filters/fetchAllItemsForPage',
+    async (url) => {
+        const { data } = await axios.get(url);
+        return data;
+    },
+);
 
 const initialState = {
     category: 'All',
@@ -7,6 +21,9 @@ const initialState = {
     searchValue: '',
     currentPage: 1,
     pageCount: 0,
+    statusLoadingFiltered: 'loading',
+    filteredItems: [],
+    allItemsForPage: [],
 };
 
 export const filterSlice = createSlice({
@@ -39,6 +56,29 @@ export const filterSlice = createSlice({
             state.category = action.payload.category;
             state.sortDirection = action.payload.sortDirection;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchFilteredItems.fulfilled, (state, action) => {
+                state.filteredItems = action.payload;
+                state.statusLoadingFiltered = 'success';
+            })
+            .addCase(fetchAllItemsForPage.fulfilled, (state, action) => {
+                state.pageCount = Math.ceil(action.payload.length / 4);
+                state.statusLoadingFiltered = 'success';
+            })
+            .addMatcher(
+                (action) => action.type.endsWith('/pending'),
+                (state) => {
+                    state.statusLoadingFiltered = 'loading';
+                },
+            )
+            .addMatcher(
+                (action) => action.type.endsWith('/rejected'),
+                (state) => {
+                    state.statusLoadingFiltered = 'error';
+                },
+            );
     },
 });
 

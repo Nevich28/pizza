@@ -1,8 +1,6 @@
-// import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategory } from '../../redux/slices/filterSlice';
-
-// const categoryesArr = ['All', 'Meat', 'Vegetarian', 'Grill', 'Spicy', 'Closed'];
+import Skeleton from './Skeleton';
 
 const CategoryItem = ({ title, itemSelect, isActive = false }) => {
     return (
@@ -16,29 +14,25 @@ const CategoryItem = ({ title, itemSelect, isActive = false }) => {
     );
 };
 
-export const Categories = ({ items, filterCategory }) => {
+export const Categories = ({ items = [], loading }) => {
     const dispatch = useDispatch();
     const categories = [...new Set(items.map((item) => item.category))];
     categories.unshift('All');
     const isSelected = useSelector((state) => state.filter.category);
-    // const [isSelected, setIsSelected] = useState(categories[0]);
-    // const handleCategory = (item) => {
-    //     if (item !== isSelected) {
-    //         // setIsSelected(item);
-    //         // filterCategory(item);
-    //         dispatch(setCategory(item));
-    //     }
-    // };
+
     return (
         <ul className=" flex flex-wrap">
-            {categories.map((item, i) => (
-                <CategoryItem
-                    isActive={isSelected === item ? true : false}
-                    itemSelect={() => dispatch(setCategory(item))}
-                    key={i}
-                    title={item}
-                />
-            ))}
+            {loading === 'loading' &&
+                [...new Array(5)].map((_, i) => <Skeleton key={i} className=" mr-4" />)}
+            {loading === 'success' &&
+                categories.map((item, i) => (
+                    <CategoryItem
+                        key={i}
+                        isActive={isSelected === item ? true : false}
+                        itemSelect={() => dispatch(setCategory(item))}
+                        title={item}
+                    />
+                ))}
         </ul>
     );
 };
