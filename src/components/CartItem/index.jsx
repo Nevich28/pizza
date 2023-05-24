@@ -1,5 +1,3 @@
-import React from 'react';
-// import { useDispatch } from 'react-redux';
 export const CartItem = ({
     id,
     title,
@@ -18,6 +16,7 @@ export const CartItem = ({
             <div className=" flex flex-col md:flex-row justify-between items-center">
                 <div className="flex items-center md:w-1/2">
                     <img className=" w-20 h-20" src={imageUrl} alt={title} />
+
                     <div className=" ml-4">
                         <h3 className=" text-xl font-bold">{title}</h3>
                         <p className=" text-lg font-normal text-[#8D8D8D]">

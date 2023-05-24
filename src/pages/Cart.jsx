@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { redirect, useNavigate } from 'react-router-dom';
 import { BackButton } from '../components/BackButton';
 
 import { CartItem } from '../components/CartItem';
@@ -9,7 +10,10 @@ import {
     clearItem,
     removeItemFromCart,
     removeItemsFromCart,
+    selectCartItems,
 } from '../redux/slices/cartSlice';
+import { showModal, toOrderOn } from '../redux/slices/modalSlice';
+import { selectUser } from '../redux/slices/userSlice';
 
 const CartHead = ({ onClear }) => (
     <div className="flex justify-between items-center">
@@ -50,7 +54,7 @@ const CartHead = ({ onClear }) => (
     </div>
 );
 
-const CartFoot = ({ totalPrice, totalCount }) => (
+const CartFoot = ({ totalPrice, totalCount, handlePlaceOrder }) => (
     <div className=" mt-10">
         <div className="flex flex-col md:flex-row justify-between text-xl font-normal">
             <span className=" mb-3 md:m-0">
@@ -62,7 +66,9 @@ const CartFoot = ({ totalPrice, totalCount }) => (
         </div>
         <div className="flex flex-col md:flex-row justify-between text-xl font-normal mt-10">
             <BackButton />
-            <button className="rounded-full py-3 px-9 bg-main-orange text-white hover:bg-orange-500 transition">
+            <button
+                onClick={handlePlaceOrder}
+                className="rounded-full py-3 px-9 bg-main-orange text-white hover:bg-orange-500 transition">
                 Place an order
             </button>
         </div>
@@ -70,9 +76,10 @@ const CartFoot = ({ totalPrice, totalCount }) => (
 );
 
 export const Cart = () => {
-    const cartItems = useSelector((state) => state.cart);
+    const cartItems = useSelector(selectCartItems);
+    const { isAuth } = useSelector(selectUser);
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const onClearCart = () => {
         dispatch(clearItem());
     };
@@ -85,8 +92,17 @@ export const Cart = () => {
         if (count > 1) dispatch(removeItemFromCart(id));
     };
 
-    const onRemoveItems = (id, count) => {
+    const onRemoveItems = (id) => {
         dispatch(removeItemsFromCart(id));
+    };
+
+    const handlePlaceOrder = () => {
+        if (isAuth) {
+            navigate('/order');
+        } else {
+            dispatch(toOrderOn());
+            dispatch(showModal());
+        }
     };
 
     return (
@@ -105,7 +121,7 @@ export const Cart = () => {
                             />
                         ))}
                     </div>
-                    <CartFoot {...cartItems} />
+                    <CartFoot {...cartItems} handlePlaceOrder={handlePlaceOrder} />
                 </>
             ) : (
                 <EmptyCart />

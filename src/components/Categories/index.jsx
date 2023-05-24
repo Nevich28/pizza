@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategory } from '../../redux/slices/filterSlice';
+import { selectCategory, setCategory } from '../../redux/slices/filterSlice';
 import Skeleton from './Skeleton';
 
 const CategoryItem = ({ title, itemSelect, isActive = false }) => {
@@ -18,10 +18,10 @@ export const Categories = ({ items = [], loading }) => {
     const dispatch = useDispatch();
     const categories = [...new Set(items.map((item) => item.category))];
     categories.unshift('All');
-    const isSelected = useSelector((state) => state.filter.category);
+    const isSelected = useSelector(selectCategory);
 
     return (
-        <ul className=" flex flex-wrap">
+        <ul className="flex flex-wrap">
             {loading === 'loading' &&
                 [...new Array(5)].map((_, i) => <Skeleton key={i} className=" mr-4" />)}
             {loading === 'success' &&

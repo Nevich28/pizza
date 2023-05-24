@@ -15,8 +15,9 @@ import {
     setFilters,
     fetchFilteredItems,
     fetchAllItemsForPage,
+    selectFilters,
 } from '../redux/slices/filterSlice';
-import { fetchItemsForCategory } from '../redux/slices/pizzasSlice';
+import { fetchItemsForCategory, selectCategorysItems } from '../redux/slices/pizzasSlice';
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -32,9 +33,9 @@ export const Home = () => {
         pageCount,
         statusLoadingFiltered,
         filteredItems,
-    } = useSelector((state) => state.filter);
-    const { items } = useSelector((state) => state.pizza);
-    const statusCategory = useSelector((state) => state.pizza.statusLoadingCategory);
+    } = useSelector(selectFilters);
+    const { items, statusLoadingCategory } = useSelector(selectCategorysItems);
+    // const statusCategory = useSelector((state) => state.pizza.statusLoadingCategory);
 
     const fetchPizzas = async () => {
         const cat = category === 'All' ? '' : `category=${category}&`;
@@ -62,6 +63,7 @@ export const Home = () => {
             isSearch.current = true;
         }
         dispatch(fetchItemsForCategory(`https://646497be043c103502bd6388.mockapi.io/pizzaitems?`));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     //если был первый рендер запрашиваем данные
     useEffect(() => {
@@ -72,6 +74,7 @@ export const Home = () => {
         }
 
         isSearch.current = false;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category, sortProperty, sortDirection, currentPage, searchValue]);
 
     //Если изменили параметры и был первый рендер
@@ -86,12 +89,13 @@ export const Home = () => {
             navigate(`?${queryString}`);
         }
         isMounted.current = true;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category, sortProperty, sortDirection, currentPage]);
 
     return (
         <>
             <div className="flex items-center justify-between mt-10 flex-wrap">
-                <Categories loading={statusCategory} items={items} />
+                <Categories loading={statusLoadingCategory} items={items} />
                 <Search />
                 <Sort />
             </div>

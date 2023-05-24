@@ -14,26 +14,26 @@ const initialState = {
 export const pizzaSlice = createSlice({
     name: 'pizza',
     initialState,
-    reducers: {
-        setItems(state, action) {
-            state.items = action.payload;
-        },
-    },
-    extraReducers: {
-        [fetchItemsForCategory.pending]: (state) => {
-            state.statusLoadingCategory = 'loading';
-        },
-        [fetchItemsForCategory.fulfilled]: (state, action) => {
-            state.items = action.payload;
-            state.statusLoadingCategory = 'success';
-        },
-        [fetchItemsForCategory.rejected]: (state) => {
-            state.statusLoadingCategory = 'error';
-            state.items = [];
-        },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchItemsForCategory.pending, (state) => {
+                state.statusLoadingCategory = 'loading';
+            })
+            .addCase(fetchItemsForCategory.fulfilled, (state, action) => {
+                state.items = action.payload;
+                state.statusLoadingCategory = 'success';
+            })
+            .addCase(fetchItemsForCategory.rejected, (state) => {
+                state.statusLoadingCategory = 'error';
+                state.items = [];
+            });
     },
 });
 
 export const { setItems } = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;
+
+//selectors
+
+export const selectCategorysItems = (state) => state.pizza;

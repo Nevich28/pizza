@@ -83,3 +83,8 @@ export const {
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
+
+//selectors
+
+export const selectCartItems = (state) => state.cart;
+export const selectCount = (id) => (state) => state.cart.items.find((obj) => obj.id === id);

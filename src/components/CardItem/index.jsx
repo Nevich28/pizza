@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem } from '../../redux/slices/cartSlice';
-// import Pizza1 from '../../assets/img/pizza/pizza.png';
-
-// const thicknessArr = ['thin', 'traditional'];
-// const sizeArr = ['26 cm.', '30 cm.', '40 cm.'];
+import { Link } from 'react-router-dom';
+import { addItem, selectCount } from '../../redux/slices/cartSlice';
 
 export const CardItem = ({ id, title, imageUrl, types, sizes, addThiknessPrice, price }) => {
     const dispatch = useDispatch();
 
     const [thickness, setThickness] = useState(types[0]);
     const [activeSize, setActiveSize] = useState(sizes[0]);
-    // const [count, setCount] = useState(0);
     const [totalPrice, setTotalPrice] = useState(price[0]);
     const currentId = id + thickness + activeSize;
-    const count = useSelector((state) => state.cart.items.find((obj) => obj.id === currentId));
+    const count = useSelector(selectCount(currentId));
 
     const onClickAdd = () => {
         const item = {
@@ -40,7 +36,9 @@ export const CardItem = ({ id, title, imageUrl, types, sizes, addThiknessPrice, 
 
     return (
         <div>
-            <img className="w-64 h-64 mx-auto" src={imageUrl} alt="title" />
+            <Link to={`/pizza/${id}`}>
+                <img className="w-64 h-64 mx-auto" src={imageUrl} alt="title" />
+            </Link>
             <h3 className=" text-xl font-extrabold text-center mt-3">{title}</h3>
             <div className="mt-5 bg-[#F3F3F3] w-full rounded-[10px] p-2">
                 <div className="flex justify-between">
@@ -76,7 +74,6 @@ export const CardItem = ({ id, title, imageUrl, types, sizes, addThiknessPrice, 
                 <span className=" text-xl font-bold">{totalPrice} $</span>
                 <button
                     className=" group/button flex h-10 px-2 items-center border border-main-orange rounded-full text-base font-bold text-main-orange hover:bg-main-orange hover:text-white"
-                    // onClick={() => setCount(count + 1)}>
                     onClick={onClickAdd}>
                     + Add to Cart
                     {count && (

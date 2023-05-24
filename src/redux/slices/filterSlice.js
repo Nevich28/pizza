@@ -94,3 +94,8 @@ export const {
 } = filterSlice.actions;
 
 export default filterSlice.reducer;
+
+//selectors
+
+export const selectFilters = (state) => state.filter;
+export const selectCategory = (state) => state.filter.category;

@@ -25,7 +25,7 @@ export const Search = () => {
     };
 
     return (
-        <div className=" relative mb-3 md:mb-0">
+        <div className=" z-0 relative mb-3 md:mb-0">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
