@@ -1,25 +1,29 @@
-import { useEffect, useRef, useState, forwardRef } from 'react';
+import { useEffect } from 'react';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { hideModal, selectToOrder } from '../../redux/slices/modalSlice';
-import { useAuth } from '../../hooks/use-auth';
-import { selectUser } from '../../redux/slices/userSlice';
+import { hideModal } from '../../redux/slices/modalSlice';
 import { errorConvert } from '../../helpers/helpers';
-import { useNavigate } from 'react-router-dom';
+import { useModal } from './useModal';
 
-export const Modal = forwardRef(({ ...props }, ref) => {
-    const dispatch = useDispatch();
-    const refScroll = useRef();
-    const menuArr = ['Login', 'Register'];
-    const [isSelected, setIsSelected] = useState(menuArr[0]);
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const { signInWithEmail, registerWithEmail, signInGoogle } = useAuth();
-    const { isAuth, error } = useSelector(selectUser);
-    const toOrder = useSelector(selectToOrder);
-    const navigate = useNavigate();
+export const Modal = ({ ...props }) => {
+    const {
+        dispatch,
+        refScroll,
+        resetInputs,
+        handleClick,
+        isAuth,
+        menuArr,
+        setIsSelected,
+        isSelected,
+        signInGoogle,
+        login,
+        password,
+        setLogin,
+        showPassword,
+        setPassword,
+        error,
+        setShowPassword,
+    } = useModal();
 
     const ActiveLine = () => {
         return (
@@ -29,30 +33,6 @@ export const Modal = forwardRef(({ ...props }, ref) => {
         );
     };
 
-    const resetInputs = () => {
-        setLogin('');
-        setPassword('');
-    };
-
-    const handleClick = (e, mod, email, password) => {
-        e.preventDefault();
-        switch (mod) {
-            case 'Login':
-                signInWithEmail(email, password);
-                if (toOrder) {
-                    navigate('/order');
-                }
-                break;
-            case 'Register':
-                registerWithEmail(email, password);
-                if (toOrder) {
-                    navigate('/order');
-                }
-                break;
-            default:
-                break;
-        }
-    };
     useEffect(() => {
         disableBodyScroll(refScroll, { reserveScrollBarGap: true });
         return () => {
@@ -66,12 +46,12 @@ export const Modal = forwardRef(({ ...props }, ref) => {
             resetInputs();
             dispatch(hideModal());
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuth, dispatch]);
 
     return (
         <div
             {...props}
-            ref={ref}
             className="top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.3)] z-40 overflow-hidden flex justify-center items-center">
             <div ref={refScroll} className="relative w-72 min-h-72 rounded-md bg-white p-4">
                 <svg
@@ -215,4 +195,4 @@ export const Modal = forwardRef(({ ...props }, ref) => {
             </div>
         </div>
     );
-});
+};
