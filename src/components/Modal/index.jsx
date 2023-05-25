@@ -25,14 +25,6 @@ export const Modal = ({ ...props }) => {
         setShowPassword,
     } = useModal();
 
-    const ActiveLine = () => {
-        return (
-            <motion.div
-                layoutId="activeItem"
-                className="w-full h-0.5 absolute -bottom-2 bg-main-orange"></motion.div>
-        );
-    };
-
     useEffect(() => {
         disableBodyScroll(refScroll, { reserveScrollBarGap: true });
         return () => {
@@ -48,6 +40,14 @@ export const Modal = ({ ...props }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuth, dispatch]);
+
+    const ActiveLine = () => {
+        return (
+            <motion.div
+                layoutId="activeItem"
+                className="w-full h-0.5 absolute -bottom-2 bg-main-orange"></motion.div>
+        );
+    };
 
     return (
         <div
