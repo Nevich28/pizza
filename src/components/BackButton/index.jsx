@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const BackButton = () => {
+export const BackButton = ({ children = 'Go back', link = '/' }) => {
     return (
         <Link
-            to="/"
-            className="flex items-center justify-center border rounded-full py-3 px-9 border-[#D3D3D3] text-[#D3D3D3] group/goback mb-3 hover:bg-black hover:text-white transition">
+            to={link}
+            className="flex items-center justify-center border rounded-full py-3 px-9 border-[#D3D3D3] text-[#D3D3D3] group/goback mb-3 sm:mb-0 hover:bg-black hover:text-white transition">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -19,7 +19,7 @@ export const BackButton = () => {
                     d="M15.75 19.5L8.25 12l7.5-7.5"
                 />
             </svg>
-            Go back
+            {children}
         </Link>
     );
 };

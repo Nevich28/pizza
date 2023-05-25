@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BackButton } from '../components/BackButton';
 
 import { CartItem } from '../components/CartItem';
@@ -69,7 +69,7 @@ const CartFoot = ({ totalPrice, totalCount, handlePlaceOrder }) => (
             <button
                 onClick={handlePlaceOrder}
                 className="rounded-full py-3 px-9 bg-main-orange text-white hover:bg-orange-500 transition">
-                Place an order
+                Confirm the order
             </button>
         </div>
     </div>

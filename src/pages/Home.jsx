@@ -67,7 +67,7 @@ export const Home = () => {
     }, []);
     //если был первый рендер запрашиваем данные
     useEffect(() => {
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
 
         if (!isSearch.current) {
             fetchPizzas();

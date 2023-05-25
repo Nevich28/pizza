@@ -5,6 +5,7 @@ import { NotFound } from './pages/NotFound';
 import { MainLayout } from './layouts/MainLayout';
 import { FullPizza } from './pages/FullPizza';
 import { Order } from './pages/Order';
+import { CompletedOrders } from './pages/CompletedOrders';
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                 <Route path="cart" element={<Cart />} />
                 <Route path="pizza/:id" element={<FullPizza />} />
                 <Route path="order" element={<Order />} />
+                <Route path="completed-orders" element={<CompletedOrders />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>

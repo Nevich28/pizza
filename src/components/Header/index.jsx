@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CartButton } from '../CartButton/idex';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,6 +17,7 @@ export const Header = () => {
     const location = useLocation();
     const [isOpened, setIsOpened] = useState(false);
     const menuRef = useRef();
+    const navigate = useNavigate();
 
     const MenuArr = ['Orders', 'Logout'];
 
@@ -38,6 +39,7 @@ export const Header = () => {
         switch (item) {
             case 'Orders':
                 setIsOpened(!isOpened);
+                navigate('/completed-orders');
                 break;
             case 'Logout':
                 dispatch(removeUser());
@@ -63,7 +65,7 @@ export const Header = () => {
                     </div>
                 </Link>
                 <div className="flex items-center">
-                    {location.pathname !== '/cart' && (
+                    {location.pathname !== '/cart' && location.pathname !== '/order' && (
                         <Link to="/cart">
                             <CartButton totalPrice={totalPrice} totalCount={totalCount} />
                         </Link>

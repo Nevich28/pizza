@@ -1,10 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
     totalPrice: 0,
     totalCount: 0,
     items: [],
+    placeOrderStatus: 'idle',
+    placeOrderkey: false,
+    placeOrderid: null,
 };
+
+export const postOrder = createAsyncThunk('cart/postOrder', async (data) => {
+    const res = await axios.post('https://646497be043c103502bd6388.mockapi.io/Orders', data);
+    return res;
+});
 
 export const cartSlice = createSlice({
     name: 'cart',
@@ -67,9 +76,29 @@ export const cartSlice = createSlice({
         removeItem(state, action) {
             state.items.filter((obj) => obj.id !== action.payload);
         },
+        resetOrderkey(state) {
+            state.placeOrderkey = false;
+        },
         clearItem() {
             return initialState;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(postOrder.pending, (state) => {
+                state.placeOrderStatus = 'loading';
+            })
+            .addCase(postOrder.fulfilled, (state, action) => {
+                state.placeOrderStatus = 'success';
+                state.placeOrderkey = true;
+                state.items = [];
+                state.totalCount = 0;
+                state.totalPrice = 0;
+                state.placeOrderid = action.payload.data.id;
+            })
+            .addCase(postOrder.rejected, (state) => {
+                state.placeOrderStatus = 'error';
+            });
     },
 });
 
@@ -80,6 +109,7 @@ export const {
     addItemFromCart,
     removeItemFromCart,
     removeItemsFromCart,
+    resetOrderkey,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
