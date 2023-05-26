@@ -50,9 +50,14 @@ export const DoneOrder = ({ date, address, totalCount, totalPrice, items }) => {
                                 {items.map((item) => (
                                     <div
                                         key={item.id}
-                                        className=" my-4 flex flex-wrap items-center overflow-hidden">
-                                        <img className=" w-14 h-14" src={item.imageUrl} alt="" />
-                                        <div className="ml-5">
+                                        // className=" my-4 flex flex-wrap items-center overflow-hidden">
+                                        className=" grid grid-cols-[auto_1fr_auto_auto] my-4">
+                                        <img
+                                            className="hidden sm:block w-14 h-14"
+                                            src={item.imageUrl}
+                                            alt=""
+                                        />
+                                        <div className="ml-0 sm:ml-5">
                                             <p className=" font-semibold">{item.title}</p>
                                             <p>
                                                 {item.type} {item.size} cm.

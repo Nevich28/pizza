@@ -55,6 +55,7 @@ export const filterSlice = createSlice({
             state.sortProperty = action.payload.sortProperty;
             state.category = action.payload.category;
             state.sortDirection = action.payload.sortDirection;
+            // state.searchValue = action.payload.searchValue;
         },
     },
     extraReducers: (builder) => {

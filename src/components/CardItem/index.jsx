@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { addItem, selectCount } from '../../redux/slices/cartSlice';
 
 export const CardItem = ({ id, title, imageUrl, types, sizes, addThiknessPrice, price }) => {
@@ -36,9 +36,9 @@ export const CardItem = ({ id, title, imageUrl, types, sizes, addThiknessPrice, 
 
     return (
         <div>
-            <Link to={`/pizza/${id}`}>
-                <img className="w-64 h-64 mx-auto" src={imageUrl} alt="title" />
-            </Link>
+            {/* <Link to={`/pizza/${id}`}> */}
+            <img className="w-64 h-64 mx-auto" src={imageUrl} alt="title" />
+            {/* </Link> */}
             <h3 className=" text-xl font-extrabold text-center mt-3">{title}</h3>
             <div className="mt-5 bg-[#F3F3F3] w-full rounded-[10px] p-2">
                 <div className="flex justify-between">

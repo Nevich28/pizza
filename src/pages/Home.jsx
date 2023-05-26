@@ -85,18 +85,20 @@ export const Home = () => {
                 category,
                 currentPage,
                 sortDirection,
+                // searchValue,
             });
             navigate(`?${queryString}`);
         }
         isMounted.current = true;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [category, sortProperty, sortDirection, currentPage]);
+    }, [category, sortProperty, sortDirection, currentPage, searchValue]);
 
     return (
         <>
             <div className="flex items-center justify-between mt-10 flex-wrap">
                 <Categories loading={statusLoadingCategory} items={items} />
-                <Search />
+                {category === 'All' && <Search />}
+
                 <Sort />
             </div>
             <h2 className="text-3xl font-bold mt-7 auto-rows-auto">All pizzas</h2>
