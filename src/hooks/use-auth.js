@@ -6,7 +6,7 @@ import {
     signInWithPopup,
 } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { setError, setUser } from '../redux/slices/userSlice';
+import { setError, setUser } from '../redux/slices/user/userSlice';
 
 export const useAuth = () => {
     const auth = getAuth();
