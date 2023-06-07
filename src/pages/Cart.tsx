@@ -85,7 +85,7 @@ const CartFoot = ({ totalPrice, totalCount, handlePlaceOrder }: CartFootProps) =
     </div>
 );
 
-export const Cart = () => {
+const Cart = (): JSX.Element => {
     const cartItems = useSelector(selectCartItems);
     const { isAuth } = useSelector(selectUser);
     const dispatch = useDispatch();
@@ -139,3 +139,5 @@ export const Cart = () => {
         </div>
     );
 };
+
+export default Cart;

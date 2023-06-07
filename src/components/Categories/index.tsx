@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Pizzas } from '../../@types/pizzas';
 import { setCategory } from '../../redux/slices/filter/filterSlice';
@@ -28,7 +29,8 @@ type CategoriesProps = {
     loading: string;
 };
 
-export const Categories = ({ items = [], loading }: CategoriesProps) => {
+export const Categories = React.memo(({ items = [], loading }: CategoriesProps) => {
+    // useWhyDidYouUpdate('Categories', { items, loading });
     const dispatch = useAppDispatch();
     const categories = [...new Set(items.map((item) => item.category))];
     categories.unshift('All');
@@ -49,4 +51,4 @@ export const Categories = ({ items = [], loading }: CategoriesProps) => {
                 ))}
         </ul>
     );
-};
+});
